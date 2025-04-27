@@ -1,6 +1,7 @@
+import { stringify } from "postcss";
 import { useState } from "react";
 
-export default function JobDetailsForm() {
+export default function CreateJob() {
   const [form, setForm] = useState({
     jobName: "",
     jobDescription: "",
@@ -9,8 +10,8 @@ export default function JobDetailsForm() {
     skills: "",
     optionalSkills: "",
     employeeBand: "",
-    experience: "",
-    positions: "",
+    experience: 0,
+    positions: 0,
   });
 
   const handleChange = (e) => {
@@ -18,9 +19,17 @@ export default function JobDetailsForm() {
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
     console.log("Submitting", form);
+    const res = await fetch("http://localhost:8080/job/submitJobDetails", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          // Add auth token header here if needed
+        },
+        body: JSON.stringify(form)
+      });
   };
 
   return (
